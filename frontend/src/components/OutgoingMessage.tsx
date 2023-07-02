@@ -1,9 +1,22 @@
-const OutgoingMessage = () => {
+import { horaMes } from "../helpers/horaMes";
+
+interface OutgoingMessage {
+  msg: {
+    _id: string;
+    de: string;
+    mensaje: string;
+    para: string;
+    updatedAt: Date;
+    createdAt: Date;
+  };
+}
+
+const OutgoingMessage = ({ msg }: OutgoingMessage) => {
   return (
     <div className="outgoing_msg">
       <div className="sent_msg">
-        <p>Test which is a new approach to have all solutions</p>
-        <span className="time_date"> 11:01 AM | June 9</span>
+        <p>{msg.mensaje}</p>
+        <span className="time_date"> {horaMes(msg.createdAt)}</span>
       </div>
     </div>
   );

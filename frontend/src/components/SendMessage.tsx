@@ -1,7 +1,13 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import { SocketContext } from "../context/SocketContext";
+import { AuthContext } from "../auth/AuthContext";
+import { ChatContext } from "../context/chat/ChatContext";
 
 const SendMessage = () => {
   const [mensaje, setMensaje] = useState("")
+  const { socket } = useContext(SocketContext)
+  const { auth } = useContext(AuthContext)
+  const { chatState } = useContext(ChatContext)
 
 
   const handlerChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -16,7 +22,11 @@ const SendMessage = () => {
     setMensaje("");
 
 
-    
+    socket.emit("mensaje-personal", {
+      de: auth.uid,
+      para: chatState.chatActivo,
+      mensaje: mensaje
+    })
   }
 
   return (

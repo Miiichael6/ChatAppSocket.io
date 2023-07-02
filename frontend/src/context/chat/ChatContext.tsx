@@ -10,7 +10,7 @@ export interface InitialState {
   mensajes: any[];
 }
 
-const initialState: InitialState = {
+export const initialState: InitialState = {
   uid: "",
   chatActivo: null, // uid al que le quiero enviar mensajes
   usuarios: [],

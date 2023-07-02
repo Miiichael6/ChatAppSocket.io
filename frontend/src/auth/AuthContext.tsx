@@ -1,5 +1,7 @@
-import { createContext, useCallback, useState } from "react";
+import { createContext, useCallback, useState, useContext } from 'react';
 import axios from "axios";
+import { types } from "../types/chat-types";
+import { ChatContext } from '../context/chat/ChatContext';
 
 export const AuthContext = createContext<any>({});
 
@@ -25,6 +27,7 @@ const initialState: InitialState = {
 
 const AuthProvider = ({ children }: AuthProvider) => {
   const [auth, setAuth] = useState<InitialState>(initialState);
+  const { dispatch } = useContext(ChatContext)
 
   const login = async (email: string, password: string) => {
     try {
@@ -129,6 +132,7 @@ const AuthProvider = ({ children }: AuthProvider) => {
   const logout = () => {
     localStorage.removeItem("token")
     setAuth({...initialState, checking: false});
+    dispatch({type: types.purgarData })
   };
 
   const data = { login, register, verifyToken, logout, auth };

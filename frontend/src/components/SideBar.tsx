@@ -12,7 +12,6 @@ interface ChatItem {
 
 const SideBar = () => {
   const { auth } = useContext(AuthContext);
-  console.log(auth.uid);
   const { chatState } = useContext(ChatContext);
 
   return (
