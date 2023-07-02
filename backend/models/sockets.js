@@ -1,5 +1,6 @@
 import {
   getUsuarios,
+  grabarMensaje,
   usuarioConectado,
   usuarioDesconectado,
 } from "../controllers/sockets.controllers.js";
@@ -26,26 +27,26 @@ export default class Sockets {
 
       await usuarioConectado(uid);
 
-      // // todo validar JWT - desconectar si no es válido
+      // todo: unir al usuario a una sala de socket.io
+      // nombre de la sala
+      socket.join(uid);
 
-      // socket.on("", () => {})
-
-      // todo: saber si user is active mediante UD
-
-      // todo: emitir todos los conectados
       this.io.emit("lista-de-usuarios", await getUsuarios());
 
       // todo: unirme a una sala Socket join
 
       // todo: Escuchar cuando el cliente manda un mensaje
-
-      // todo disconnect, al momento de que alguien se desconectó
+      socket.on("mensaje-personal", async (payload) => {
+        const mensaje = await grabarMensaje(payload);
+        this.io.to(payload.para).emit("mensaje-personal", mensaje);
+        this.io.to(payload.de).emit("mensaje-personal", mensaje);
+      });
 
       // todo emitir todo los users conectados
 
       socket.on("disconnect", async () => {
         await usuarioDesconectado(uid);
-        this.io.emit("lista-de-usuarios", await getUsuarios())
+        this.io.emit("lista-de-usuarios", await getUsuarios());
         console.log("cliente desconectado", uid);
       });
     });

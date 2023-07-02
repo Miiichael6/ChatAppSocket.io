@@ -1,3 +1,4 @@
+import Message from "../models/mensaje.js";
 import User from "../models/user.js";
 
 // Controller to get all items
@@ -28,4 +29,22 @@ export const getUsuarios = async () => {
   const users = await User.find().sort("-online");
 
   return users;
-}
+};
+
+export const grabarMensaje = async (payload) => {
+  try {
+    const data = {
+      de: payload.de,
+      para: payload.para,
+      mensaje: payload.mensaje,
+    };
+
+    const mensaje = new Message(data);
+
+    await mensaje.save();
+
+    return mensaje;
+  } catch (error) {
+    console.log(error);
+  }
+};
