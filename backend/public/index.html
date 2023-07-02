@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>Mini Chat</title>
+  </head>
+  <body class="container">
+    <h1 class="mt-5 text-center">Mini chat</h1>
+    <hr>
+
+    <form id="miFormulario">
+      <div class="row">
+        <div class="col-8">
+          <input type="text" id="txtMensaje" placeholder="mensaje" class="form-control">
+        </div>
+        <div class="col-4">
+          <button class="btn btn-primary" type="submit">
+            Send
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div class="row">
+      <div class="col">
+        <ul id="misMensajes" class="mt-2">
+    
+        </ul>
+      </div>
+    </div>
+
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.0/socket.io.js"
+      integrity="sha512-+sXUwEYakGznuXubXLO/7LWSAPcm+U3NxMJaSu3S5OcvruAAAzaC50Uh4TW9KWj0hA6vfPAjB7E1uuIXgn9vmQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script>
+      const socket = io("http://localhost:4000")
+      const formulario = document.getElementById("miFormulario");
+      const mensajes = document.getElementById("misMensajes")
+      const txtMensaje = document.getElementById("txtMensaje")
+
+
+      formulario.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const nuevoMensaje = txtMensaje.value;
+        
+        socket.emit("mensaje-al-servidor", {text: nuevoMensaje})
+        
+        txtMensaje.value = "";
+      })
+
+      socket.on("mensaje-from-server", (data) => {
+        mensajes.innerHTML += `<li>${data.text}</li>`
+      })
+
+      // Esucha el evento emitido
+      // socket.on("mensaje", (data) => {
+      //   console.log({data})
+      // })
+
+
+      // setTimeout(() => {
+        // console.log("PUM!")
+        // emitir un evento
+        // mensaje
+        // {msg: "...", nombre: "Michael"}
+
+        // socket.emit("client:mensaje", {msg: "...", nombre: "..."})
+      // }, 2000);
+    </script>
+  </body>
+</html>
