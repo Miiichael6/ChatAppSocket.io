@@ -36,9 +36,9 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   useEffect(() => {
     socket?.on("mensaje-personal", (mensaje: any) => {
       // dispatch
-      dispatch({type: types.nuevoMensaje, payload: mensaje})
+      dispatch({ type: types.nuevoMensaje, payload: mensaje });
       // mover scroll
-      scrollToBottomAnimated("mensajes")
+      scrollToBottomAnimated("mensajes");
     });
   }, [socket]);
 
